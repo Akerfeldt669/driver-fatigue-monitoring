@@ -1,0 +1,81 @@
+# ============================================
+# PATHS CONFIGURATION
+# ============================================
+
+# Base directories
+base:
+  root: "."
+  data: "data"
+  models: "models"
+  scripts: "scripts"
+  app: "app"
+  outputs: "outputs"
+
+# Data paths
+data:
+  raw:
+    root: "data/raw"
+    eyes:
+      root: "data/raw/eyes"
+      train: "data/raw/eyes/train"
+      val: "data/raw/eyes/val"
+      test: "data/raw/eyes/test"
+    yawns:
+      root: "data/raw/yawns"
+      train: "data/raw/yawns/train"
+      val: "data/raw/yawns/val"
+  
+  processed:
+    root: "data/processed"
+    eyes: "data/processed/eyes"
+    yawns: "data/processed/yawns"
+  
+  augmented:
+    root: "data/augmented"
+    eyes: "data/augmented/eyes"
+    yawns: "data/augmented/yawns"
+
+# Model paths
+models:
+  saved: "models/saved"
+  checkpoints: "models/checkpoints"
+  tflite: "models/tflite"
+  
+  eye_classifier:
+    h5: "models/saved/eye_classifier.h5"
+    best: "models/checkpoints/eye_classifier_best.h5"
+    tflite: "models/tflite/eye_classifier.tflite"
+  
+  yawn_detector:
+    h5: "models/saved/yawn_detector.h5"
+    best: "models/checkpoints/yawn_detector_best.h5"
+    tflite: "models/tflite/yawn_detector.tflite"
+
+# Output paths
+outputs:
+  logs:
+    root: "outputs/logs"
+    app: "outputs/logs/app.log"
+    training: "outputs/logs/training.log"
+    sessions: "outputs/logs/sessions.db"
+  
+  plots:
+    root: "outputs/plots"
+    training: "outputs/plots/training"
+    evaluation: "outputs/plots/evaluation"
+  
+  reports:
+    root: "outputs/reports"
+    performance: "outputs/reports/performance.json"
+    statistics: "outputs/reports/statistics.csv"
+
+# Assets paths
+assets:
+  sounds:
+    root: "assets/sounds"
+    warning: "assets/sounds/warning.wav"
+    critical: "assets/sounds/critical.wav"
+  
+  icons:
+    root: "assets/icons"
+    app: "assets/icons/app.ico"

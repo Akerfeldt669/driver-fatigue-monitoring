@@ -1,0 +1,225 @@
+# ============================================
+# DRIVER DROWSINESS DETECTION - CONFIGURATION
+# ============================================
+
+project:
+  name: "driver-alertness-system"
+  version: "1.0.0"
+  author: "Your Name"
+
+# ============================================
+# PATHS
+# ============================================
+paths:
+  # Data directories
+  data_root: "C:/Users/ADMIN/Desktop/data"
+  data_root: "C:/Users/ADMIN/Desktop/data1"
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  augmented_data: "data/augmented"
+  
+  # Model directories
+  models_root: "models"
+  saved_models: "models/saved"
+  checkpoints: "models/checkpoints"
+  tflite_models: "models/tflite"
+  
+  # Output directories
+  outputs_root: "outputs"
+  logs_dir: "outputs/logs"
+  plots_dir: "outputs/plots"
+  reports_dir: "outputs/reports"
+
+# ============================================
+# DATA CONFIGURATION
+# ============================================
+data:
+  # Image settings
+  eye_image_size: 32          # Eye ROI size (32x32)
+  mouth_image_size: 48        # Mouth ROI size (48x48)
+  
+  # Data splits
+  train_split: 0.8            # 80% for training
+  val_split: 0.1              # 10% for validation
+  test_split: 0.1             # 10% for testing
+  
+  # Training settings
+  batch_size: 32
+  shuffle: true
+  
+  # Augmentation
+  augmentation:
+    enabled: true
+    rotation_range: 15
+    width_shift: 0.15
+    height_shift: 0.15
+    zoom_range: 0.15
+    horizontal_flip: true
+    brightness_range: [0.8, 1.2]
+    
+
+# ============================================
+# MODEL TRAINING
+# ============================================
+training:
+  # Eye Classifier
+  eye_classifier:
+    epochs: 50
+    learning_rate: 0.001
+    early_stopping:
+      patience: 15
+      restore_best_weights: true
+    reduce_lr:
+      patience: 7
+      factor: 0.5
+      min_lr: 0.0000001
+    optimizer: "adam"
+    loss: "categorical_crossentropy"
+    metrics: ["accuracy", "precision", "recall"]
+  
+  # Yawn Detector
+  yawn_detector:
+    epochs: 40
+    learning_rate: 0.0005
+    early_stopping:
+      patience: 12
+      restore_best_weights: true
+    reduce_lr:
+      patience: 5
+      factor: 0.5
+      min_lr: 0.0000001
+    optimizer: "adam"
+    loss: "categorical_crossentropy"
+    metrics: ["accuracy", "precision", "recall"]
+
+# ============================================
+# DETECTION THRESHOLDS
+# ============================================
+detection:
+  # Eye state
+  ear_threshold: 0.25                # Eye Aspect Ratio threshold
+  ear_consecutive_frames: 20         # Frames before drowsy alert (~0.67s at 30fps)
+  eye_closed_confidence: 0.7         # ML model confidence threshold
+  
+  # Yawning
+  mar_threshold: 0.6                 # Mouth Aspect Ratio threshold
+  yawn_consecutive_frames: 15        # Frames before yawn alert (~0.5s)
+  yawn_confidence: 0.75              # ML model confidence threshold
+  
+  # Head pose
+  yaw_threshold: 25                  # Degrees left/right
+  pitch_threshold: 20                # Degrees up/down
+  head_pose_frames: 30               # Frames before distraction alert
+  
+  # Alert levels
+  alert_levels:
+    info: 0.3                        # Attention score < 0.3 → Info
+    warning: 0.5                     # Attention score < 0.5 → Warning
+    danger: 0.7                      # Attention score < 0.7 → Danger
+    critical: 0.9                    # Attention score < 0.9 → Critical
+
+# ============================================
+# REAL-TIME PROCESSING
+# ============================================
+realtime:
+  # Camera settings
+  camera:
+    source: 0                        # 0 = default webcam
+    width: 640
+    height: 480
+    fps: 30
+  
+  # Performance
+  target_fps: 25                     # Target processing FPS
+  frame_skip: 1                      # Process every Nth frame (1 = no skip)
+  enable_gpu: false                  # Use GPU if available
+  
+  # Face detection
+  face_detection:
+    backend: "mediapipe"             # "mediapipe" or "dlib"
+    min_confidence: 0.5
+    max_faces: 1
+
+# ============================================
+# UI SETTINGS
+# ============================================
+ui:
+  # Window
+  window_title: "Driver Alertness Monitor"
+  window_width: 1280
+  window_height: 720
+  
+  # Display
+  show_landmarks: true
+  show_fps: true
+  show_stats: true
+  
+  # Colors (BGR format)
+  colors:
+    normal: [0, 255, 0]              # Green
+    warning: [0, 165, 255]           # Orange
+    danger: [0, 0, 255]              # Red
+    critical: [255, 0, 255]          # Magenta
+    text: [255, 255, 255]            # White
+
+# ============================================
+# ALERTS
+# ============================================
+alerts:
+  # Audio
+  audio:
+    enabled: true
+    warning_sound: "assets/sounds/warning.wav"
+    critical_sound: "assets/sounds/critical.wav"
+    volume: 0.8
+  
+  # Visual
+  visual:
+    enabled: true
+    flash_screen: true
+    overlay_message: true
+  
+  # Throttling (prevent alert spam)
+  throttle:
+    min_interval: 5                  # Minimum seconds between alerts
+
+# ============================================
+# LOGGING
+# ============================================
+logging:
+  # Console logging
+  console:
+    enabled: true
+    level: "INFO"                    # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  
+  # File logging
+  file:
+    enabled: true
+    path: "outputs/logs/app.log"
+    level: "DEBUG"
+    max_bytes: 10485760              # 10MB
+    backup_count: 5
+  
+  # Session logging (database)
+  session:
+    enabled: true
+    database: "outputs/logs/sessions.db"
+    log_events: true
+    log_statistics: true
+
+# ============================================
+# STATISTICS
+# ============================================
+statistics:
+  # What to track
+  track:
+    - drowsy_events
+    - yawn_events
+    - distraction_events
+    - attention_score
+    - session_duration
+  
+  # Export
+  auto_export: true
+  export_format: "csv"               # csv, json, or both
+  export_interval: 300                # seconds (5 minutes)

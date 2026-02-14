@@ -1,0 +1,197 @@
+# ============================================
+# MODEL ARCHITECTURES
+# ============================================
+
+# ============================================
+# EYE STATE CLASSIFIER
+# ============================================
+eye_classifier:
+  name: "EyeStateCNN"
+  description: "Binary classifier for eye state (open/closed)"
+  
+  # Input
+  input_shape: [32, 32, 1]           # 32x32 grayscale
+  num_classes: 2                      # open, closed
+  
+  # Architecture layers
+  layers:
+    # Block 1
+    - type: "Conv2D"
+      filters: 32
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "Conv2D"
+      filters: 32
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "MaxPooling2D"
+      pool_size: [2, 2]
+    
+    - type: "Dropout"
+      rate: 0.25
+    
+    # Block 2
+    - type: "Conv2D"
+      filters: 64
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "Conv2D"
+      filters: 64
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "MaxPooling2D"
+      pool_size: [2, 2]
+    
+    - type: "Dropout"
+      rate: 0.25
+    
+    # Block 3
+    - type: "Conv2D"
+      filters: 128
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "MaxPooling2D"
+      pool_size: [2, 2]
+    
+    - type: "Dropout"
+      rate: 0.25
+    
+    # Dense layers
+    - type: "Flatten"
+    
+    - type: "Dense"
+      units: 128
+      activation: "relu"
+    
+    - type: "BatchNormalization"
+    
+    - type: "Dropout"
+      rate: 0.5
+    
+    - type: "Dense"
+      units: 64
+      activation: "relu"
+    
+    - type: "Dropout"
+      rate: 0.3
+    
+    - type: "Dense"
+      units: 2
+      activation: "softmax"
+
+# ============================================
+# YAWN DETECTOR
+# ============================================
+yawn_detector:
+  name: "YawnDetectorCNN"
+  description: "Binary classifier for yawning detection"
+  
+  # Input
+  input_shape: [48, 48, 3]           # 48x48 RGB
+  num_classes: 2                      # yawning, normal
+  
+  # Transfer learning option
+  transfer_learning:
+    enabled: false
+    base_model: "MobileNetV2"
+    weights: "imagenet"
+    trainable: false
+    fine_tune_layers: 30
+  
+  # Architecture layers (if transfer_learning disabled)
+  layers:
+    # Block 1
+    - type: "Conv2D"
+      filters: 32
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "MaxPooling2D"
+      pool_size: [2, 2]
+    
+    - type: "Dropout"
+      rate: 0.25
+    
+    # Block 2
+    - type: "Conv2D"
+      filters: 64
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "MaxPooling2D"
+      pool_size: [2, 2]
+    
+    - type: "Dropout"
+      rate: 0.25
+    
+    # Block 3
+    - type: "Conv2D"
+      filters: 128
+      kernel_size: [3, 3]
+      activation: "relu"
+      padding: "same"
+    
+    - type: "BatchNormalization"
+    
+    - type: "MaxPooling2D"
+      pool_size: [2, 2]
+    
+    - type: "Dropout"
+      rate: 0.25
+    
+    # Dense
+    - type: "Flatten"
+    
+    - type: "Dense"
+      units: 128
+      activation: "relu"
+    
+    - type: "Dropout"
+      rate: 0.5
+    
+    - type: "Dense"
+      units: 2
+      activation: "softmax"
+
+# ============================================
+# MODEL OPTIMIZATION
+# ============================================
+optimization:
+  # TensorFlow Lite conversion
+  tflite:
+    enabled: true
+    optimizations: ["DEFAULT"]
+    quantization:
+      enabled: true
+      type: "float16"                # float16, int8, dynamic
+    
+  # Pruning
+  pruning:
+    enabled: false
+    target_sparsity: 0.5

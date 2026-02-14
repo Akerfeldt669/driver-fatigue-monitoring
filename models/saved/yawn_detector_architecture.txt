@@ -1,0 +1,94 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv2d (Conv2D)             (None, 48, 48, 32)        896       
+                                                                 
+ batch_normalization (Batch  (None, 48, 48, 32)        128       
+ Normalization)                                                  
+                                                                 
+ conv2d_1 (Conv2D)           (None, 48, 48, 32)        9248      
+                                                                 
+ batch_normalization_1 (Bat  (None, 48, 48, 32)        128       
+ chNormalization)                                                
+                                                                 
+ max_pooling2d (MaxPooling2  (None, 24, 24, 32)        0         
+ D)                                                              
+                                                                 
+ dropout (Dropout)           (None, 24, 24, 32)        0         
+                                                                 
+ conv2d_2 (Conv2D)           (None, 24, 24, 64)        18496     
+                                                                 
+ batch_normalization_2 (Bat  (None, 24, 24, 64)        256       
+ chNormalization)                                                
+                                                                 
+ conv2d_3 (Conv2D)           (None, 24, 24, 64)        36928     
+                                                                 
+ batch_normalization_3 (Bat  (None, 24, 24, 64)        256       
+ chNormalization)                                                
+                                                                 
+ max_pooling2d_1 (MaxPoolin  (None, 12, 12, 64)        0         
+ g2D)                                                            
+                                                                 
+ dropout_1 (Dropout)         (None, 12, 12, 64)        0         
+                                                                 
+ conv2d_4 (Conv2D)           (None, 12, 12, 128)       73856     
+                                                                 
+ batch_normalization_4 (Bat  (None, 12, 12, 128)       512       
+ chNormalization)                                                
+                                                                 
+ conv2d_5 (Conv2D)           (None, 12, 12, 128)       147584    
+                                                                 
+ batch_normalization_5 (Bat  (None, 12, 12, 128)       512       
+ chNormalization)                                                
+                                                                 
+ max_pooling2d_2 (MaxPoolin  (None, 6, 6, 128)         0         
+ g2D)                                                            
+                                                                 
+ dropout_2 (Dropout)         (None, 6, 6, 128)         0         
+                                                                 
+ conv2d_6 (Conv2D)           (None, 6, 6, 256)         295168    
+                                                                 
+ batch_normalization_6 (Bat  (None, 6, 6, 256)         1024      
+ chNormalization)                                                
+                                                                 
+ max_pooling2d_3 (MaxPoolin  (None, 3, 3, 256)         0         
+ g2D)                                                            
+                                                                 
+ dropout_3 (Dropout)         (None, 3, 3, 256)         0         
+                                                                 
+ flatten (Flatten)           (None, 2304)              0         
+                                                                 
+ dense (Dense)               (None, 256)               590080    
+                                                                 
+ batch_normalization_7 (Bat  (None, 256)               1024      
+ chNormalization)                                                
+                                                                 
+ dropout_4 (Dropout)         (None, 256)               0         
+                                                                 
+ dense_1 (Dense)             (None, 128)               32896     
+                                                                 
+ batch_normalization_8 (Bat  (None, 128)               512       
+ chNormalization)                                                
+                                                                 
+ dropout_5 (Dropout)         (None, 128)               0         
+                                                                 
+ dense_2 (Dense)             (None, 2)                 258       
+                                                                 
+=================================================================
+Total params: 1209762 (4.61 MB)
+Trainable params: 1207586 (4.61 MB)
+Non-trainable params: 2176 (8.50 KB)
+_________________________________________________________________
+
+
+======================================================================
+MODEL INFORMATION
+======================================================================
+
+total_params: 1209762
+trainable_params: 1207586
+non_trainable_params: 2176
+layers: 30
+input_shape: (None, 48, 48, 3)
+output_shape: (None, 2)
