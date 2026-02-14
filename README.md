@@ -88,7 +88,7 @@ data/raw/yawns/
 MIT License - feel free to use for research and development
 
 ## Contact
-ayoubaknouche66@gmail.com
+ayoubaknouche666@gmail.com
 
 ## Acknowledgments
 - MRL Eye Dataset by Akashshingha
